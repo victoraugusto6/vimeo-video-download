@@ -1,7 +1,7 @@
 from time import sleep
 from selenium import webdriver
 import chromedriver_autoinstaller
-from contrib.auth import username, passw
+from auth.auth import username, passw
 
 
 def carregar_lista_videos():
@@ -10,7 +10,7 @@ def carregar_lista_videos():
         with open('videos-lista.txt', 'r') as arq:
             for valor in arq:
                 lista.append(valor.replace('\n', ''))
-    except:
+    except FileNotFoundError:
         print('Erro ao localizar o arquivo!')
     finally:
         arq.close()
@@ -19,14 +19,15 @@ def carregar_lista_videos():
 
 def baixar_video():
     botao_baixar = driver.find_element_by_xpath(
-        '//*[@id="main"]/div/main/div/div/div/div[2]/div[2]/div/button[1]/span').click()
+        '//*[@id="main"]/div/main/div/div/div/div[2]/div[2]/div/button[1]/span')
+    botao_baixar.click()
 
     sleep(1)
-
     while True:
         try:
-            botao_240p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[1]/div[2]/a/span')
-        except:
+            # botao_240p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[1]/div[2]/a/span')
+            driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[1]/div[2]/a/span')
+        except SyntaxError:
             sleep(1)
             continue
         else:
@@ -34,11 +35,14 @@ def baixar_video():
 
     # Botões de Download do vídeo
     try:
-        botao_1080p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[6]/div[2]/a/span').click()
-    except Exception:
-        botao_720p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[4]/div[2]/a/span').click()
-    except:
-        botao_540p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[3]/div[2]/a/span').click()
+        botao_1080p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[6]/div[2]/a/span')
+        botao_1080p.click()
+    except SyntaxError:
+        botao_720p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[4]/div[2]/a/span')
+        botao_720p.click()
+    except SyntaxError:
+        botao_540p = driver.find_element_by_xpath('//*[@id="download_panel"]/div/div[3]/div[2]/a/span')
+        botao_540p.click()
 
 
 def percorrer_lista():
@@ -51,7 +55,7 @@ def percorrer_lista():
 
         try:
             caixa_mensagem_fechar = driver.find_element_by_xpath('//*[@id="main"]/div/div[2]/button')
-        except:
+        except SyntaxError:
             baixar_video()
             print(f'Baixando o vídeo: {c}')
         else:
