@@ -1,7 +1,7 @@
 from time import sleep
 from selenium import webdriver
 import chromedriver_autoinstaller
-from auth.auth import username, passw
+from contrib.auth import username, passw
 
 
 def carregar_lista_videos():
