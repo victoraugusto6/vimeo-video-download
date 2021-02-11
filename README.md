@@ -8,6 +8,9 @@ Para o login, escolha entre o método manual ou inserindo suas credenciais em:
 
 `contrib/auth.py`
 
+Para instalar o pipenv:
+```pipenv install```
+
 Para instalar dependências utilize o comando:
 ```pipenv sync```
 
